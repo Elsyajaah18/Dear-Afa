@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semangat Terus!</title>
+    
+    <!-- Memuat Tailwind CSS untuk styling yang cepat dan modern -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Memuat Google Fonts (Quicksand) untuk tampilan teks yang ramah dan lembut -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icon dari Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+        }
+        
+        /* Animasi mengambang untuk icon */
+        .float-anim {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Animasi fade in untuk teks quote agar transisinya halus */
+        .fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Background gradien animasi */
+        .bg-animate {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Efek kaca (Glassmorphism) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Transisi Layer (CSS Grid Trick untuk menumpuk elemen) */
+        .layer-container {
+            display: grid;
+        }
+        .layer {
+            grid-area: 1 / 1;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(20px) scale(0.95);
+            pointer-events: none;
+        }
+        .layer.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="bg-animate min-h-screen flex items-center justify-center p-4 sm:p-8">
+
+    <!-- Container Utama diperlebar (max-w-2xl) agar pas untuk teks panjang -->
+    <div class="glass-card w-full max-w-2xl rounded-3xl shadow-2xl p-8 sm:p-12 text-center relative overflow-hidden">
+        
+        <!-- Ornamen Dekorasi -->
+        <div class="absolute -top-10 -left-10 w-32 h-32 bg-white rounded-full mix-blend-overlay filter blur-xl opacity-50"></div>
+        <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-white rounded-full mix-blend-overlay filter blur-xl opacity-50"></div>
+
+        <div class="layer-container min-h-[350px]">
+            
+            <!-- LAYER 1: Cover Surat -->
+            <div id="layer-1" class="layer active flex flex-col items-center justify-center h-full">
+                <div class="float-anim mb-4 text-white text-7xl">
+                    <i class="ph-fill ph-envelope-simple"></i>
+                </div>
+                <p class="text-xl sm:text-2xl text-white/90 font-medium mb-1">Dear,</p>
+                <h1 class="text-3xl sm:text-5xl font-bold text-white mb-10 drop-shadow-md">
+                    Yusha Amira Zalfania
+                </h1>
+                <button onclick="goToLayer(2)" class="group relative inline-flex items-center justify-center px-8 py-3 font-bold text-gray-800 bg-white rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden">
+                    <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-200"></span>
+                    <span class="relative flex items-center">Buka Pesan <i class="ph-bold ph-envelope-open ml-2 text-yellow-500 group-hover:scale-110 transition-transform"></i></span>
+                </button>
+            </div>
+
+            <!-- LAYER 2: Pembukaan -->
+            <div id="layer-2" class="layer flex flex-col items-center justify-center h-full">
+                <div class="float-anim mb-6 text-white text-5xl">
+                    <i class="ph-fill ph-stars"></i>
+                </div>
+                <p class="text-xl sm:text-2xl leading-relaxed text-white font-semibold mb-10 drop-shadow-sm">
+                    "Haii, kamu tau ngga kalau hari ini jadi salah satu hari yang aku nantikan, hari dimana salah satu wishlist dalam doa ku terkabulkan."
+                </p>
+                <button onclick="goToLayer(3)" class="group relative inline-flex items-center justify-center px-8 py-3 font-bold text-gray-800 bg-white rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden">
+                    <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-200"></span>
+                    <span class="relative flex items-center">Lanjut <i class="ph-bold ph-arrow-right ml-2 text-yellow-500 group-hover:translate-x-1 transition-transform"></i></span>
+                </button>
+            </div>
+
+            <!-- LAYER 3: Apresiasi Usaha -->
+            <div id="layer-3" class="layer flex flex-col items-center justify-center h-full">
+                <div class="float-anim mb-6 text-white text-5xl">
+                    <i class="ph-fill ph-graduation-cap"></i>
+                </div>
+                <p class="text-lg sm:text-xl leading-relaxed text-white font-medium mb-10 drop-shadow-sm">
+                    "Untuk sampai hari ini aku tau betul bagaimana usaha kamu selama ini, ikhtiar kamu dalam doa dan usaha yang tidak pernah usai. Jujur aku sangat bangga denganmu, saat aku mendengar kamu lulus disitu aku bener-bener bahagia..."
+                </p>
+                <button onclick="goToLayer(4)" class="group relative inline-flex items-center justify-center px-8 py-3 font-bold text-gray-800 bg-white rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden">
+                    <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-200"></span>
+                    <span class="relative flex items-center">Lanjut <i class="ph-bold ph-arrow-right ml-2 text-yellow-500 group-hover:translate-x-1 transition-transform"></i></span>
+                </button>
+            </div>
+
+            <!-- LAYER 4: Doa dan Penutup -->
+            <div id="layer-4" class="layer flex flex-col items-center justify-center h-full">
+                <div class="float-anim mb-4 text-white text-5xl">
+                    <i class="ph-fill ph-heart"></i>
+                </div>
+                <p class="text-lg sm:text-xl leading-relaxed text-white font-medium mb-8 drop-shadow-sm text-justify sm:text-center">
+                    "Kamu hebat, selamat yahh memulai lagi perjalanan baru kamu, mungkin kedepannya akan banyak ujian yang datang, tapi aku percaya, kamu akan menerobos semua ujian itu dengan baik. Allah pasti akan selalu ada untuk kamu, dan orang-orang di sekitar kamu akan selalu support kamu. Doa ku insyaallah akan selalu menyertaimu apapun keadaan nya, semangat Afaa for day 1 PSPA..."
+                </p>
+                <div class="w-full flex justify-end mt-2">
+                    <p class="text-2xl sm:text-3xl font-bold text-white italic drop-shadow-md mr-4">
+                        from : el
+                    </p>
+                </div>
+                
+                <!-- Tombol opsional untuk mengulang (bisa dihapus jika tidak perlu) -->
+                <button onclick="goToLayer(1)" class="mt-8 opacity-70 hover:opacity-100 text-white underline text-sm transition-opacity">Baca Ulang dari Awal</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk berpindah antar layer
+        function goToLayer(layerNumber) {
+            // Ambil semua elemen layer
+            const layers = document.querySelectorAll('.layer');
+            
+            // Hapus class 'active' dari semua layer
+            layers.forEach(layer => {
+                layer.classList.remove('active');
+            });
+            
+            // Tambahkan class 'active' ke layer yang dituju agar muncul dengan animasi
+            const targetLayer = document.getElementById(`layer-${layerNumber}`);
+            if (targetLayer) {
+                targetLayer.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
