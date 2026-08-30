@@ -85,12 +85,76 @@
             transform: translateY(0) scale(1);
             pointer-events: auto;
         }
+
+        /* --- TAMBAHAN: EFEK BACKGROUND PARTIKEL MENGAMBANG --- */
+        .circles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            z-index: 0;
+            pointer-events: none; /* Agar tidak menghalangi klik tombol */
+        }
+
+        .circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            animation: animateBubble 25s linear infinite;
+            bottom: -150px;
+            border-radius: 50%;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Variasi ukuran, posisi, dan kecepatan gelembung */
+        .circles li:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .circles li:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .circles li:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+        .circles li:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+        .circles li:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+        .circles li:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
+        .circles li:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
+        .circles li:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
+        .circles li:nth-child(9) { left: 20%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; }
+        .circles li:nth-child(10) { left: 85%; width: 150px; height: 150px; animation-delay: 0s; animation-duration: 11s; }
+
+        @keyframes animateBubble {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
+        }
+
+        /* --- TAMBAHAN: ANIMASI DETAK JANTUNG --- */
+        .pulse-anim {
+            animation: pulseHeart 1.5s infinite;
+        }
+
+        @keyframes pulseHeart {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(0.95); }
+        }
     </style>
+
+    <!-- Memuat Canvas Confetti untuk efek ledakan kertas selebrasi -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 </head>
-<body class="bg-animate min-h-screen flex items-center justify-center p-4 sm:p-8">
+<body class="bg-animate min-h-screen flex items-center justify-center p-4 sm:p-8 relative">
+
+    <!-- Elemen Partikel Background -->
+    <ul class="circles">
+        <li></li><li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li><li></li>
+    </ul>
 
     <!-- Container Utama diperlebar (max-w-2xl) agar pas untuk teks panjang -->
-    <div class="glass-card w-full max-w-2xl rounded-3xl shadow-2xl p-8 sm:p-12 text-center relative overflow-hidden">
+    <div class="glass-card w-full max-w-2xl rounded-3xl shadow-2xl p-8 sm:p-12 text-center relative overflow-hidden z-10">
         
         <!-- Ornamen Dekorasi -->
         <div class="absolute -top-10 -left-10 w-32 h-32 bg-white rounded-full mix-blend-overlay filter blur-xl opacity-50"></div>
@@ -143,7 +207,8 @@
 
             <!-- LAYER 4: Doa dan Penutup -->
             <div id="layer-4" class="layer flex flex-col items-center justify-center h-full">
-                <div class="float-anim mb-4 text-white text-5xl">
+                <!-- Icon Hati diubah jadi animasi detak dan warnanya disesuaikan -->
+                <div class="pulse-anim mb-4 text-pink-300 text-6xl drop-shadow-lg">
                     <i class="ph-fill ph-heart"></i>
                 </div>
                 <p class="text-lg sm:text-xl leading-relaxed text-white font-medium mb-8 drop-shadow-sm text-justify sm:text-center">
@@ -177,6 +242,47 @@
             const targetLayer = document.getElementById(`layer-${layerNumber}`);
             if (targetLayer) {
                 targetLayer.classList.add('active');
+            }
+
+            /* --- TAMBAHAN: LOGIKA TRIGGER CONFETTI --- */
+            if (layerNumber === 2) {
+                // Confetti ledakan tunggal saat pertama buka pesan
+                confetti({
+                    particleCount: 150,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    zIndex: 100,
+                    colors: ['#ffffff', '#facc15', '#ffb7b2']
+                });
+            } else if (layerNumber === 4) {
+                // Confetti ala kembang api panjang saat sampai di doa dan ucapan
+                var duration = 4 * 1000;
+                var animationEnd = Date.now() + duration;
+                var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+
+                function randomInRange(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
+
+                var interval = setInterval(function() {
+                    var timeLeft = animationEnd - Date.now();
+
+                    if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                    }
+
+                    var particleCount = 50 * (timeLeft / duration);
+                    // Confetti dari kiri
+                    confetti(Object.assign({}, defaults, { 
+                        particleCount,
+                        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+                    }));
+                    // Confetti dari kanan
+                    confetti(Object.assign({}, defaults, { 
+                        particleCount,
+                        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+                    }));
+                }, 250);
             }
         }
     </script>
